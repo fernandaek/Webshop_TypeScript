@@ -14,6 +14,7 @@ export class Service implements IService {
             p.Description = item.Description;
             p.Image = item.Image;
             p.Price = item.Price;
+            p.Count = 0;
             
             return p;
         })

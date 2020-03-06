@@ -315,6 +315,7 @@ function () {
               p.Description = item.Description;
               p.Image = item.Image;
               p.Price = item.Price;
+              p.Count = 0;
               return p;
             });
             console.log("Converted list: ", product);
@@ -332,6 +333,149 @@ function () {
 exports.Service = Service;
 },{"../models/Product":"src/models/Product.ts"}],"src/main.ts":[function(require,module,exports) {
 "use strict";
+
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = this && this.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function sent() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) {
+      try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+
+          case 4:
+            _.label++;
+            return {
+              value: op[1],
+              done: false
+            };
+
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+
+          case 7:
+            op = _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+
+              _.ops.push(op);
+
+              break;
+            }
+
+            if (t[2]) _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+        }
+
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -354,38 +498,23 @@ function () {
     this.addItemCart = this.addItemCart.bind(this);
   }
 
-  Main.prototype.plusFunc = function () {
+  Main.prototype.plusFunc = function (i, plusButton, formControl) {
     var _this = this;
 
-    var plusButton = document.getElementsByClassName("btn-plus");
+    plusButton.addEventListener("click", function () {
+      _this.products[i].Count++;
+      formControl.value = "" + _this.products[i].Count;
 
-    var _loop_1 = function _loop_1(i) {
-      var quantityElement = document.getElementsByClassName('form-control')[i];
-      var button = plusButton[i];
-      var count = 1;
-      button.addEventListener("click", function () {
-        count++;
-        quantityElement.value = "" + count;
-
-        _this.updateCartTotal();
-
-        _this.minusFunc(count, i, quantityElement);
-      });
-    };
-
-    for (var i = 0; i < plusButton.length; i++) {
-      _loop_1(i);
-    }
+      _this.updateCartTotal();
+    });
   };
 
-  Main.prototype.minusFunc = function (count, i, quantityElement) {
+  Main.prototype.minusFunc = function (i, minusButton, formControl) {
     var _this = this;
 
-    var minusButton = document.getElementsByClassName("btn-minus");
-    var button = minusButton[i];
-    button.addEventListener("click", function () {
-      count--;
-      quantityElement.value = "" + count;
+    minusButton.addEventListener("click", function () {
+      _this.products[i].Count--;
+      formControl.value = "" + _this.products[i].Count;
 
       _this.updateCartTotal();
     });
@@ -409,21 +538,27 @@ function () {
     document.getElementsByClassName('cart-total-price')[0].innerText = '$' + total;
   };
 
-  Main.prototype.removeCartProducts = function () {
+  Main.prototype.removeCartProducts = function (j) {
     var _this = this;
 
-    var removeCartItems = document.getElementsByClassName("btn-danger"); // console.log(addCartItems)
+    var removeCartItems = document.getElementsByClassName("btn-danger");
 
     for (var i = 0; i < removeCartItems.length; i++) {
       var button = removeCartItems[i];
-      button.addEventListener("click", function (event) {
-        var buttonClicked = event.target;
-        buttonClicked.parentElement.parentElement.parentElement.remove();
 
-        _this.addCartProducts();
+      if (button.classList.contains("listening") === false) {
+        button.classList.add("listening");
+        button.addEventListener("click", function (event) {
+          var buttonClicked = event.target;
+          buttonClicked.parentElement.parentElement.parentElement.remove();
+          _this.counter--;
+          _this.products[j].Count = 0;
 
-        _this.updateCartTotal();
-      });
+          _this.productCounterAnimation();
+
+          _this.updateCartTotal();
+        });
+      }
     }
   };
 
@@ -432,7 +567,7 @@ function () {
 
     var addCartItems = document.getElementsByClassName("btn-primary");
 
-    for (var i = 0; i < addCartItems.length; i++) {
+    var _loop_1 = function _loop_1(i) {
       var button = addCartItems[i];
       button.addEventListener("click", function (event) {
         var buttonClicked = event.target;
@@ -440,55 +575,71 @@ function () {
         var title = btnClicked.getElementsByClassName("card-title")[0].innerText;
         var price = btnClicked.getElementsByClassName("price")[0].innerText;
         var imgSrc = btnClicked.getElementsByClassName("card-img-top")[0].src;
+        var idMinus = "minus" + i;
+        var idPlus = "plus" + i;
+        var idFormControl = "formControl" + i;
 
-        _this.addItemCart(title, price, imgSrc);
+        _this.addItemCart(title, price, imgSrc, i, idMinus, idPlus, idFormControl);
 
         _this.updateCartTotal();
       });
+    };
+
+    for (var i = 0; i < addCartItems.length; i++) {
+      _loop_1(i);
     }
   };
 
-  Main.prototype.addItemCart = function (title, price, imgSrc) {
+  Main.prototype.addItemCart = function (title, price, imgSrc, i, idMinus, idPlus, idFormControl) {
     var cartRow = document.createElement("div");
     cartRow.classList.add("cart-row");
     var cartItems = document.getElementsByClassName("cart-items")[0];
-    var cartRowContents = "\n        <div class=\"cart-item cart-column\">\n            <img class=\"cart-item-image\" src=\"" + imgSrc + "\" width=\"100\" height=\"100\">\n            <span class=\"cart-item-title\">" + title + "</span>\n        </div>\n        <span class=\"cart-price cart-column\">" + price + "</span>\n        <div class=\"cart-quantity cart-column\">\n            <div class=\"input-group mb-3\">\n                <div class=\"input-group-prepend\">\n                    <button class=\"btn btn-plus btn-outline-secondary\" type=\"button\"> + </button>\n                </div>\n                    <input id=\"count\" type=\"text\" class=\"form-control\" placeholder=\"\" aria-label=\"\" aria-describedby=\"basic-addon1\" value=\"1\">\n                    <div class=\"input-group-append\">\n                    <button class=\"btn btn-minus btn-outline-secondary\" type=\"button\"> - </button>\n                </div>\n                    <button class=\"btn-danger\" type=\"button\">X</button>\n                </div>\n        </div>";
+    var cartRowContents = "\n        <div class=\"cart-item cart-column\">\n            <img class=\"cart-item-image\" src=\"" + imgSrc + "\" width=\"100\" height=\"100\">\n            <span class=\"cart-item-title\">" + title + "</span>\n        </div>\n        <span class=\"cart-price cart-column\">" + price + "</span>\n        <div class=\"cart-quantity cart-column\">\n            <div class=\"input-group mb-3\">\n                <div class=\"input-group-prepend\">\n                    <button id=\"" + idPlus + "\" class=\"btn btn-plus btn-outline-secondary\" type=\"button\"> + </button>\n                </div>\n                    <input id=\"" + idFormControl + "\" type=\"text\" class=\"form-control\" placeholder=\"\" aria-label=\"\" aria-describedby=\"basic-addon1\" value=\"1\">\n                    <div class=\"input-group-append\">\n                    <button id=\"" + idMinus + "\" class=\"btn btn-minus btn-outline-secondary\" type=\"button\"> - </button>\n                </div>\n                    <button class=\"btn-danger\" type=\"button\">X</button>\n                </div>\n        </div>";
+    this.products[i].Count += 1;
     cartRow.innerHTML = cartRowContents;
     cartItems.append(cartRow);
     cartRow.getElementsByClassName('btn-danger')[0].addEventListener('click', this.removeCartProducts);
-    this.removeCartProducts();
+    var minusButton = document.getElementById("" + idMinus);
+    var plusButton = document.getElementById("" + idPlus);
+    var formControl = document.getElementById("" + idFormControl);
+    this.removeCartProducts(i);
     this.updateCartTotal();
-    this.plusFunc();
+    this.plusFunc(i, plusButton, formControl);
+    this.minusFunc(i, minusButton, formControl);
   };
 
   Main.prototype.productCounter = function () {
+    var _this = this;
+
     var button = document.getElementsByClassName("btn");
-    var counter = 0;
+    this.counter = 0;
 
     for (var i = 0; i < button.length; i++) {
       button[i].addEventListener("click", function () {
-        // console.log("Clicked: ", ++counter, "index: ", i)
-        var antalSpan = document.getElementById("antal");
-        antalSpan.innerHTML = 'Antal: ' + ++counter;
-        var cart = document.getElementById("cart");
-        cart.classList.remove('shake'); // reset animation
+        _this.counter++;
 
-        void cart.offsetWidth; // trigger reflow
-
-        cart.classList.add('shake'); // start animation
-        //    console.log("i: ",i, "counter: ", counter)
-
-        return counter;
+        _this.productCounterAnimation();
       });
     }
   };
 
-  Main.prototype.displayProducts = function (products) {
+  Main.prototype.productCounterAnimation = function () {
+    var antalSpan = document.getElementById("antal");
+    antalSpan.innerHTML = 'Antal: ' + this.counter;
+    var cart = document.getElementById("cart");
+    cart.classList.remove('shake'); // reset animation
+
+    void cart.offsetWidth; // trigger reflow
+
+    cart.classList.add('shake'); // start animation
+  };
+
+  Main.prototype.displayProducts = function () {
     var row = document.getElementById("row");
 
-    for (var i in products) {
+    for (var i in this.products) {
       document.createElement("div");
-      row.innerHTML += "<div class=\"col-md-3 col-sm-6\">\n                                <div class=\"card\" style=\"width: 18rem;\">\n                                <img class=\"card-img-top\" id=\"img\" src=\"" + products[i].Image + "\" alt=\"Card image cap\">\n                                <span class=\"price\" id=\"price\">" + products[i].Price + ":-</span>\n                                    <div class=\"card-body text-center\">\n                                        <h5 class=\"card-title\" id=\"title\" style=\"margin-top: -50px\">" + products[i].Title + "</h5>\n                                        <p class=\"card-text\">" + products[i].Description + "</p>\n                                        <a href=\"#\" class=\"btn btn-primary\" id=\"btn\">Add to cart</a>\n                                    </div>\n                                </div>\n                            </div>";
+      row.innerHTML += "<div class=\"col-md-3 col-sm-6\">\n                                <div class=\"card\" style=\"width: 18rem;\">\n                                <img class=\"card-img-top\" id=\"img\" src=\"" + this.products[i].Image + "\" alt=\"Card image cap\">\n                                <span class=\"price\" id=\"price\">" + this.products[i].Price + ":-</span>\n                                    <div class=\"card-body text-center\">\n                                        <h5 class=\"card-title\" id=\"title\" style=\"margin-top: -50px\">" + this.products[i].Title + "</h5>\n                                        <p class=\"card-text\">" + this.products[i].Description + "</p>\n                                        <a href=\"#\" class=\"btn btn-primary\" id=\"btn\">Add to cart</a>\n                                    </div>\n                                </div>\n                            </div>";
     }
 
     this.addCartProducts();
@@ -496,16 +647,27 @@ function () {
   };
 
   Main.prototype.start = function () {
-    var _this = this;
+    return __awaiter(this, void 0, void 0, function () {
+      var _a;
 
-    this.service.getProduct().then(function (products) {
-      console.log("In main", products);
+      return __generator(this, function (_b) {
+        switch (_b.label) {
+          case 0:
+            _a = this;
+            return [4
+            /*yield*/
+            , this.service.getProduct()];
 
-      _this.displayProducts(products);
-
-      _this.productCounter();
-
-      _this.updateCartTotal();
+          case 1:
+            _a.products = _b.sent();
+            this.displayProducts();
+            this.productCounter();
+            this.updateCartTotal();
+            return [2
+            /*return*/
+            ];
+        }
+      });
     });
   };
 
@@ -541,7 +703,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49283" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59959" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
