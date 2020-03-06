@@ -1,0 +1,261 @@
+body {
+    background-color: antiquewhite;
+}
+
+.jumbotron {
+margin-bottom: 0;
+background-image: url("https://images.unsplash.com/photo-1552152974-19b9caf99137?fit=crop&w=1350&q=80");
+background-size: cover;
+color: antiquewhite;
+}
+
+.row > div[class*='col-'] {
+    display: flex;
+    flex:1 0 auto;
+}
+.container{
+    margin-top: 60px;
+}
+.card{
+    margin-top: 10px;
+}
+
+.card:hover{
+  background-color: rgba(0, 255, 0, 0.1);
+  cursor: pointer;
+}
+.btn {
+    background-color: antiquewhite;
+    border-color: burlywood;
+    color: burlywood;
+}
+.card-img{
+    height: 170px;
+}
+.btn:hover{
+    background-color: burlywood;
+    color: antiquewhite;
+    border-color: antiquewhite;
+}
+.btn:active, .btn:focus {
+    background-color: burlywood !important;
+    color: antiquewhite !important;
+    border-color: antiquewhite !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+
+}
+
+
+.div.card-body{
+    height: 180px;
+}
+
+.sticky {
+    position: fixed;
+    width: 100%;
+    z-index: 9;
+}
+
+
+#cart {
+    cursor: pointer;
+}
+
+.price {
+    color: red;
+    background-color: #ffe68b;
+    display: block;
+    width: 80px;
+    padding: 10px 5px 10px 0px;
+    margin: 10px;
+    position: relative;
+    left: 60%;
+    bottom: 30px;
+    text-align: right;
+    font-family: courier;
+    border-radius: 2px;
+    filter: drop-shadow(1px 1px 0.8px rgba(0, 0, 0, 0.2));
+    transform: rotateZ(0deg) scale(1);
+    transition: all 0.5s ease;
+  }
+
+  .price::before {
+    content: "";
+    padding: 18px;
+    position: absolute;
+    background-color: #ffe68b;
+    left: -6px;
+    top: 1px;
+    border-bottom-left-radius: 50%;
+    border-top-left-radius: 50%;
+    z-index: -1;
+  }
+  
+  .price::after {
+    content: "";
+    padding: 18px;
+    position: absolute;
+    background-color: #ffe68b;
+    right: -6px;
+    top: 1px;
+    border-bottom-right-radius: 50%;
+    border-top-right-radius: 50%;
+    z-index: -1;
+  }  
+
+
+  .intro {
+    width: 100%;
+    margin-top: 60px;
+  }
+  .intro img {
+    margin-top: 50px;
+    margin-left: 150px;
+    width: 30%;
+  }
+  .intro h2 {
+    margin-top: -250px;
+    margin-left: 47.5%;
+    margin-right: 15%;
+    font-size: 40px;
+    font-weight: 500;
+  }
+  .intro b {
+    color: #6b6552;
+  }
+  
+.shake {
+    color: antiquewhite;
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+  
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+  
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+.show {
+  width: 700px;
+  height: 500px;
+  background-color: rgb(58, 57, 56);
+  opacity: 0.6;
+  float: right;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  float: right;
+  margin-right: 20px;
+  margin-top: 95px;
+  padding: 20px;
+  background: antiquewhite;
+  border-radius: 5px;
+  width: 40%;
+  height: auto;
+  position: relative;
+  opacity: 0.9;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #6b6552;
+}
+.popup .content {
+  overflow: auto;
+}
+
+
+.cart-header {
+  font-weight: bold;
+  font-size: 1.25em;
+  color: #333;
+}
+
+.cart-column {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid black;
+  margin-right: 1.5em;
+  padding-bottom: 10px;
+  margin-top: 10px;
+}
+
+.cart-row {
+  display: flex;
+}
+
+.cart-item {
+  width: 45%;
+}
+
+.cart-price {
+  width: 20%;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.cart-quantity {
+  width: 35%;
+}
+
+.cart-item-title {
+  color: #333;
+  margin-left: .5em;
+  font-size: 1.2em;
+}
+
+.cart-item-image {
+  width: 75px;
+  height: auto;
+  border-radius: 10px;
+}
+
+
+/*# sourceMappingURL=/style.78032849.css.map */
